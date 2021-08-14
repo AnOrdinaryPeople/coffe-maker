@@ -35,7 +35,6 @@ def choose_coffee():
 
 
 def input_money():
-    # TODO 2: input insert coin (quarters-dimes-nickles-pennies)
     print(lang['input_coins'])
     money = []
 
@@ -49,9 +48,7 @@ def input_money():
 
 
 def validate_money(total_money):
-    # TODO 5: Cek duit cukup atau nggk
     if total_money >= selected['cost']:
-        # TODO 3: Jika duit cukup kopi dibikin dan uang kembalian diberikan
         total_money -= selected['cost']
         print(lang['return'], total_money)
     else:
@@ -59,7 +56,6 @@ def validate_money(total_money):
 
 
 def coffee_maker(inputuser, object):
-    # TODO 4: Cek Bahan
     ingredients = object['ingredients'].keys()
     counter = 0
 
@@ -76,7 +72,6 @@ def coffee_maker(inputuser, object):
         return lang['errors']['not_enough_ingredients']
 
 
-# TODO 1: input buat pilihan menu (espresso/latte/cappuccino)
 print(lang['welcome'])
 
 while boolean:
@@ -91,8 +86,6 @@ while boolean:
     except Exception as err:
         print(err)
     finally:
-        # TODO 6: While loop
-
         want_exit = input(lang['should_loop']).lower()
 
         if want_exit == 't':
