@@ -10,24 +10,41 @@ menu_coin = [
     ['Dimes', .1],
     ['Quarters', .25],
 ]
+errors = lang['errors']
 
 
-def throw(message):
+def throw(message: str):
+    """
+    Simplify raise exception.
+
+    :type message: str
+    :param message: Message for error output.
+
+    :raises Exception: exception error message.
+    """
     raise Exception(message)
 
 
 def choose_coffee():
+    """
+    Choose available coffee at MENU.
+
+    :raises Exception: error message for validation.
+
+    :rtype: str
+    :return: input from user.
+    """
     try:
         user_input = input(lang['choose_coffee'](menu_keys)).lower()
 
         if user_input.isnumeric():
-            throw(lang['errors']['must_char'])
+            throw(errors['must_char'])
         elif user_input == '':
-            throw(lang['errors']['empty_input'])
+            throw(errors['empty_input'])
         elif re.search('[@_!#$%^&*()<>?/\|}{~:]', user_input):
-            throw(lang['errors']['symbols'])
+            throw(errors['symbols'])
         elif not (user_input in menu_keys):
-            throw(lang['errors']['not_found'](user_input))
+            throw(errors['not_found'](user_input))
     except Exception as error:
         raise error
 
@@ -35,6 +52,14 @@ def choose_coffee():
 
 
 def input_money():
+    """
+    Input user coin with menu_coin.
+
+    :raises Exception: error message for validation.
+
+    :rtype: int
+    :return: total coins.
+    """
     print(lang['input_coins'])
     money = []
 
@@ -42,25 +67,47 @@ def input_money():
         try:
             money.append(int(input(lang['input_coin_list'](m[0]))) * m[1])
         except:
-            throw(lang['errors']['must_numeric'])
+            throw(errors['must_numeric'])
 
     return round(sum(money), 2)
 
 
-def validate_money(total_money, cost):
+def validate_money(total_money: int, cost: int):
+    """
+    Validation if the coins is enough.
+
+    :type total_money: int
+    :param total_money: Total coins user.
+
+    :type cost: int
+    :param cost: Coffee cost.
+
+    :raises Exception: error message for validation.
+    """
     if total_money >= cost:
         total_money -= cost
         print(lang['return'], total_money)
     else:
-        throw(lang['errors']['not_enough'])
+        throw(errors['not_enough'])
 
 
-def coffee_maker(inputuser, object):
-    ingredients = object['ingredients'].keys()
+def coffee_maker(inputuser: str, ingredients: dict):
+    """
+    Create the coffee.
+
+    :type inputuser: str
+    :param inputuser: Selected coffee.
+
+    :type ingredients: dict
+    :param ingredients: Ingredients from selected coffee.
+
+    :rtype: str
+    :return: Result of the coffee.
+    """
     counter = 0
 
-    for i in ingredients:
-        ing = object['ingredients'][i]
+    for i in ingredients.keys():
+        ing = ingredients[i]
 
         if resources[i] >= ing:
             counter += 1
@@ -69,7 +116,7 @@ def coffee_maker(inputuser, object):
     if(len(ingredients) == counter):
         return lang['enjoy'](inputuser)
     else:
-        return lang['errors']['not_enough_ingredients']
+        return errors['not_enough_ingredients']
 
 
 print(lang['welcome'])
@@ -81,7 +128,10 @@ while boolean:
 
         validate_money(input_money(), selected['cost'])
 
-        print(lang['result'], coffee_maker(user_input, selected))
+        print(
+            lang['result'],
+            coffee_maker(user_input, selected['ingredients'])
+        )
 
     except Exception as err:
         print(err)
