@@ -71,7 +71,7 @@ def coffee_maker(inputuser, object):
             resources[i] -= ing
 
     if(len(ingredients) == counter):
-        return lang['enjoy']
+        return lang['enjoy'](inputuser)
     else:
         return lang['errors']['not_enough_ingredients']
 
