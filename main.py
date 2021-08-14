@@ -47,9 +47,9 @@ def input_money():
     return round(sum(money), 2)
 
 
-def validate_money(total_money):
-    if total_money >= selected['cost']:
-        total_money -= selected['cost']
+def validate_money(total_money, cost):
+    if total_money >= cost:
+        total_money -= cost
         print(lang['return'], total_money)
     else:
         throw(lang['errors']['not_enough'])
@@ -79,7 +79,7 @@ while boolean:
         user_input = choose_coffee()
         selected = MENU[user_input]
 
-        validate_money(input_money())
+        validate_money(input_money(), selected['cost'])
 
         print(lang['result'], coffee_maker(user_input, selected))
 
