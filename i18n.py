@@ -3,11 +3,13 @@ from lang import lang
 
 
 class I18n:
-    def __init__(self):
+    def __init__(self, init_lang: str = None):
+        self.init_lang = init_lang
+        self.init_bool = type(self.init_lang) is str
         self.config = self.create_config()['I18n']
         self.lang = lang
         self.available = lang.keys()
-        self.selected = lang[self.config['language']]
+        self.selected = self.handle_selected()
 
     def create_config(self):
         config = ConfigParser()
@@ -25,6 +27,17 @@ class I18n:
         try:
             value = config.get('I18n', key)
         except:
-            value = default
+            value = self.init_bool if self.init_lang else default
 
         return value
+
+    def handle_selected(self):
+        if(self.init_bool):
+            try:
+                obj = lang[self.init_lang]
+            except:
+                obj = {}
+
+            return obj
+
+        return lang[self.config['language']]
