@@ -1,16 +1,15 @@
-from data import MENU, resources
-from lang.id import lang
+from data import data
+from operator import itemgetter
+import i18n
 import re
 
+MENU, resources, menu_coin = itemgetter('menu', 'resources', 'coins')(data)
+trans = i18n.I18n()
+lang = trans.selected
 boolean = True
 menu_keys = MENU.keys()
-menu_coin = [
-    ['Penny', .01],
-    ['Nickels', .05],
-    ['Dimes', .1],
-    ['Quarters', .25],
-]
 errors = lang['errors']
+exit_options = re.search('\(([^)]+)', lang['should_loop']).group(1)[-1].lower()
 
 
 def throw(message: str):
@@ -132,11 +131,10 @@ while boolean:
             lang['result'],
             coffee_maker(user_input, selected['ingredients'])
         )
-
     except Exception as err:
         print(err)
     finally:
         want_exit = input(lang['should_loop']).lower()
 
-        if want_exit == 't':
+        if want_exit == exit_options:
             boolean = False
